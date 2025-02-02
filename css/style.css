@@ -1,0 +1,107 @@
+@charset "UTF-8";
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --fonteh1: normal bold 60px 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    --fonteh2: normal bold 45px 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    --fonteh3: normal bold 35px 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    --fontep: normal normal 25px 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    --fonteul: normal normal 25px 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    --corh1: darkgreen;
+    --corh2: rgba(0, 68, 255, 0.715);
+    --corh3: darkgoldenrod;
+}
+
+h1 {
+    font: var(--fonteh1);
+    text-align: center;
+    color: var(--corh1);
+    padding: 10px;
+}
+
+h2 {
+    font: var(--fonteh2);
+    text-indent: 0.5in;
+    color: var(--corh2);
+    padding: 10px;
+}
+
+h3 {
+    font: var(--fonteh3);
+    text-indent: 0.2in;
+    color: var(--corh3);
+    padding: 10px;
+}
+
+p, div, h5, h4, a {
+    font: var(--fontep);
+    text-align: justify;
+    text-indent: 0.3in;
+    margin: 0 10px;
+    line-height: 1.2em;
+    text-decoration: none;
+}
+
+ul {
+    font: var(--fonteul);
+    text-align: justify;
+    text-indent: 0.3in;
+    margin: 0 10px;
+    line-height: 1.2em;
+}
+
+span{
+    margin: -10px;
+    padding: 0;
+}
+
+span.verde {
+    color: var(--corh1);
+}
+span.azul {
+    color: var(--corh2);
+}
+span.amarelo {
+    color: var(--corh3);
+}
+
+button {
+    display: block;
+    padding: 10px;
+    margin: auto;
+}
+
+.curso {
+    padding: 10px;
+    border: 4px solid black;
+    background-color: gray;
+    display: flex;
+    justify-content: center;
+    margin: 5px;
+    border-radius: 10px;
+    max-width: 500px;
+    transition-duration: 0.18s;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.curso:hover {
+    border: 4px solid red;
+}
+
+.especial {
+    color: white;
+    text-shadow: 1px 1px 1px black;
+    background-color: rgb(156, 0, 0);
+}
+
+.btnLixeira {
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+}

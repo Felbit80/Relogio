@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/projeto.css">
+    <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
+    <title>Aula076</title>
+</head>
+<body>
+    <h1 id="data"></h1>
+    <a href="index.html">Aula 76</a>
+    <script>
+        new Date() //Interface ou classe referida a data e hora
+        const data = new Date() //Objeto instanciado a partir da classe Date
+        data.setFullYear(2024) //Alteração do valor de ano
+        console.log(data) //Impressão completa com todas as informações
+        console.log("Dia do mês: "+data.getDate()) //Impressão de informações específicas
+        console.log(`Dia da semana: ${data.getDay()+1}`)
+        console.log("Ano: "+data.getFullYear())
+        console.log("Hora: "+data.getHours())
+        console.log("Milisegundos: "+data.getMilliseconds())
+        console.log("Minutos: "+data.getMinutes())
+        console.log(`Mês: ${data.getMonth()+1}`)
+        console.log("Segundos: "+data.getSeconds())
+        console.log("Timestamp: "+data.getTime())
+        console.log("Fuso-horário: -"+data.getTimezoneOffset())
+        const divData = document.querySelector("#data") //Elemento para impressão da data
+        divData.innerHTML=`${data.getDate()<10?`0${data.getDate()}`:data.getDate()}/${data.getMonth()<10?`0${data.getMonth()+1}`:data.getMonth()}/${data.getFullYear()}` //O innerHTML recebe a data entre barras, também utilizamos operadores ternários para tratar caso o dia ou mês sejam de apenas 1 digito, para que apareça o 0 na frente
+    </script>
+</body>
+</html>
