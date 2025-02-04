@@ -3,19 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./css/projeto.css">
+    <link rel="stylesheet" href="css/projeto.css">
     <link rel="shortcut icon" href="favicon.png" type="image/x-icon">
-    <title>Aula076</title>
+    <title>Relógio</title>
 </head>
 <body>
     <h1 id="data"></h1>
-    <a href="index.html">Aula 76</a>
+    <div id="relogio">
+        <div id="horario">00:00:00</div>
+        <div id="alarme">
+            <label id="horaAlarme">Hora do alarme:</label>
+            <div  id="tempoAlarme">
+                <label>Tempo do alarme:</label>
+                <input type="number" id="inputAlarme" placeholder="Segundos" min="0">
+            </div>
+            <div id="divMedidasTempo">
+                <div class="medidaTempo">
+                    <p>Segundos</p>
+                    <input type="radio" name="medidaTempo" class="inputMedidaTempo" checked>
+                </div>
+                <div class="medidaTempo">
+                    <p>Minutos</p>
+                    <input type="radio" name="medidaTempo" class="inputMedidaTempo">
+                </div>
+                <div class="medidaTempo">
+                    <p>Horas</p>
+                    <input type="radio" name="medidaTempo" class="inputMedidaTempo">
+                </div>
+            </div>
+        </div>
+        <div id="botoes">
+            <div id="btnAtivar" class="botao">Ativar</div>
+            <div id="btnParar" class="botao">Parar</div>
+        </div>
+    </div>
     <script>
-        new Date() //Interface ou classe referida a data e hora
-        const data = new Date() //Objeto instanciado a partir da classe Date
-        data.setFullYear(2024) //Alteração do valor de ano
-        console.log(data) //Impressão completa com todas as informações
-        console.log("Dia do mês: "+data.getDate()) //Impressão de informações específicas
+        const data = new Date()
+        const divData = document.querySelector("#data")
+        console.log(data)
+        console.log("Dia do mês: "+data.getDate())
         console.log(`Dia da semana: ${data.getDay()+1}`)
         console.log("Ano: "+data.getFullYear())
         console.log("Hora: "+data.getHours())
@@ -25,8 +51,79 @@
         console.log("Segundos: "+data.getSeconds())
         console.log("Timestamp: "+data.getTime())
         console.log("Fuso-horário: -"+data.getTimezoneOffset())
-        const divData = document.querySelector("#data") //Elemento para impressão da data
-        divData.innerHTML=`${data.getDate()<10?`0${data.getDate()}`:data.getDate()}/${data.getMonth()<10?`0${data.getMonth()+1}`:data.getMonth()}/${data.getFullYear()}` //O innerHTML recebe a data entre barras, também utilizamos operadores ternários para tratar caso o dia ou mês sejam de apenas 1 digito, para que apareça o 0 na frente
+        divData.innerHTML=`${data.getDate()<10?`0${data.getDate()}`:data.getDate()}/${data.getMonth()<10?`0${data.getMonth()+1}`:data.getMonth()}/${data.getFullYear()}`
+
+        const relogio = document.querySelector("#relogio")
+        const horaAlarme = document.querySelector("#horaAlarme")
+        const inputAlarme = document.querySelector("#inputAlarme")
+        const btnAtivar = document.querySelector("#btnAtivar")
+        const btnParar = document.querySelector("#btnParar")
+        const somAlarme = new Audio("alarme.wav")
+        somAlarme.loop = -1
+
+        const horario = document.querySelector("#horario")
+        const funcaoRelogio = () => {
+            const data = new Date()
+            let hora = data.getHours()
+            let minuto = data.getMinutes()
+            let segundo = data.getSeconds()
+            horario.innerHTML=`${hora<10?"0"+hora:hora}:${minuto<10?"0"+minuto:minuto}:${segundo<10?"0"+segundo:segundo}`
+            if(alarmeAtivado && !alarmeTocando){
+                if(data.getTime() >= timestampAlarme){
+                    relogio.classList.add("tocando")
+                    alarmeTocando = true
+                    somAlarme.play()
+                }
+            }
+        }
+        const funcaoRelogioIntervalo = setInterval(funcaoRelogio, 1000)
+
+        let alarmeAtivado = false, alarmeTocando = false, timestampAtual = undefined, timestampAlarme = undefined
+
+        btnAtivar.addEventListener("click", (evt) => {
+            if(inputAlarme.value == "" || inputAlarme.value == "0"){
+                alert("Digite um valor válido para o alarme!")
+                inputAlarme.focus()
+            } else {
+                alarmeAtivado = true
+                timestampAtual = Date.now()
+                if(inputAlarme.placeholder == "Segundos"){
+                    timestampAlarme = timestampAtual + inputAlarme.value*1000
+                } else if(inputAlarme.placeholder == "Minutos"){
+                    timestampAlarme = timestampAtual + inputAlarme.value*60000
+                } else if(inputAlarme.placeholder == "Horas"){
+                    timestampAlarme = timestampAtual + inputAlarme.value*3600000
+                }
+                const dataAlarme = new Date(timestampAlarme)
+                horaAlarme.innerHTML = `Hora do Alarme: ${dataAlarme.getHours()<10?"0"+dataAlarme.getHours():dataAlarme.getHours()}:${dataAlarme.getMinutes()<10?"0"+dataAlarme.getMinutes():dataAlarme.getMinutes()}:${dataAlarme.getSeconds()<10?"0"+dataAlarme.getSeconds():dataAlarme.getSeconds()}`
+            }
+        })
+
+        btnParar.addEventListener("click", (evt) => {
+            alarmeAtivado = false
+            alarmeTocando = false
+            timestampAtual = undefined
+            timestampAlarme = undefined
+            horaAlarme.innerHTML = `Hora do alarme:`
+            inputAlarme.value=""
+            inputAlarme.focus()
+            relogio.classList.remove("tocando")
+            somAlarme.pause()
+            somAlarme.currentTime = 0
+        })
+
+        const inputs = document.querySelectorAll(".inputMedidaTempo")
+        inputs.forEach(input => {
+            input.addEventListener("click", (evt) => {
+                inputs.forEach(input => {
+                    input.classList.remove("selecionado")
+                })
+                input.classList.add("selecionado")
+                if(input.checked){
+                    inputAlarme.placeholder = input.previousElementSibling.innerHTML
+                }
+            })
+        })
     </script>
 </body>
 </html>
